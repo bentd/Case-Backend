@@ -41,10 +41,6 @@ class User(db.Model):
         self.confirmed = confirmed
         self.reset = reset
 
-    def generateToken(self, expiry=None):
-
-        return User.Serializer(expiry).dumps({"email": self.email})
-
     def hashPassword(self, password):
 
         return bcrypt.generate_password_hash(password)
@@ -53,6 +49,11 @@ class User(db.Model):
 
         return bcrypt.check_password_hash(self.phash, password)
 
+    def add(self):
+
+        db.session.add(self)
+        db.session.commit()
+
     def update(self, form):
 
         self.phash =  self.phash if (self.verifyPassword(form.password.data)) else self.hashPassword(password)
@@ -60,6 +61,10 @@ class User(db.Model):
         self.email = form.email.data
         self.firstName = form.firstName.data
         self.lastName = form.lastName.data
+
+    def generateToken(self, expiry=None):
+
+        return User.Serializer(expiry).dumps({"email": self.email})
 
     @classmethod
     def fromForm(cls, form):

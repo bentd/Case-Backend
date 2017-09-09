@@ -31,8 +31,7 @@ def signup():
     if form.validate():
         # add user to database
         user = User.fromForm(form)
-        db.session.add(user)
-        db.session.commit()
+        user.add()
         # send confirmation email
         token = user.generateToken(expiry=172800)
         url = url_for("accounts.confirm", token=token, _external=True)
@@ -46,7 +45,7 @@ def signup():
     return jsonify(form.errors), 400
 
 
-@accounts.route("/account/confirm", methods=["POST"])
+@accounts.route("/account/confirmation", methods=["POST"])
 @auth.login_required
 def sendConfirmation():
 
@@ -94,6 +93,9 @@ def updateAccount():
 
     form = EditAccountForm(data=request.json)
     if form.validate:
+        g.user.update(form)
+        db.session.add(user)
+        db.session.commit()
         return "", 200
     return "", 400
 

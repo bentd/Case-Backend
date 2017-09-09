@@ -6,6 +6,7 @@ flask_httpauth
 flask_mail
 flask_sqlalchemy
 flask_wtf
+gunicorn
 itsdangerous
 pymysql
 sqlalchemy

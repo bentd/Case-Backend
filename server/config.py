@@ -19,13 +19,13 @@ class BaseConfig(object):
 
     # mail settings
     MAIL_PORT = 587
-    MAIL_SERVER = "smtp-relay.gmail.com"
+    MAIL_SERVER = "smtp.gmail.com"
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
 
     # mail authentication and sender
     MAIL_USERNAME = "code@dylanbent.com"
-    MAIL_PASSWORD = "D26b8788$"
+    MAIL_PASSWORD = "dcwvbpbayrmcotuy"
     MAIL_DEFAULT_SENDER = "code@dylanbent.com"
 
     #database
