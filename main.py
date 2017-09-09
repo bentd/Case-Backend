@@ -5,12 +5,8 @@ from wtforms import StringField
 from wtforms import Form
 from wtforms.validators import DataRequired
 from werkzeug import ImmutableMultiDict
-
 from server import app
 
-class MyForm(Form):
-
-    foo = StringField("foo", validators=[DataRequired()])
 
 app.secret_key = "$3CR3+"
 
