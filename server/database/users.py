@@ -62,6 +62,11 @@ class User(db.Model):
         self.firstName = form.firstName.data
         self.lastName = form.lastName.data
 
+    def delete(self):
+
+        db.session.delete(self)
+        db.session.commit()
+
     def generateToken(self, expiry=None):
 
         return User.Serializer(expiry).dumps({"email": self.email})

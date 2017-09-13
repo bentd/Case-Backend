@@ -104,4 +104,5 @@ def updateAccount():
 @auth.login_required
 def deleteAccount():
 
+    g.user.delete()
     return Response(str(request.json), status=200)

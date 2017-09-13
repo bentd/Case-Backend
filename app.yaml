@@ -4,3 +4,9 @@ entrypoint: gunicorn -b :$PORT main:app
 
 runtime_config:
   python_version: 2
+
+env_variables:
+    SQLALCHEMY_DATABASE_URI: mysql+pymysql://root:8?At7NYQeDa7tjU#TD%Uv6r5CTHe5Y-4@/casedb?unix_socket=/cloudsql/case-app-backend:us-east1:casedb
+
+beta_settings:
+    cloud_sql_instances: case-app-backend:us-east1:casedb

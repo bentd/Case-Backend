@@ -12,7 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
-app.config.from_object(os.environ.get("APP_SETTINGS", "server.config.DevelopmentConfig"))
+app.config.from_object(os.environ.get("APP_SETTINGS", "server.config.ProductionConfig"))
 
 
 bcrypt = Bcrypt(app)
@@ -23,7 +23,6 @@ mail = Mail(app)
 # from server.database.posts import Post
 # from server.database.schools import School
 from server.database.users import User
-db.create_all()
 
 
 auth = HTTPBasicAuth()
@@ -45,7 +44,6 @@ app.register_blueprint(accounts)
 app.register_blueprint(posts)
 app.register_blueprint(schools)
 app.register_blueprint(tokens)
-
 
 
 @app.errorhandler(403)

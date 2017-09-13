@@ -1,0 +1,18 @@
+#! /bin/bash
+
+config="$1"
+
+case $config in
+    dev)
+        export APP_SETTINGS="server.config.DevelopmentConfig"
+        ;;
+    test)
+        export APP_SETTINGS="server.config.TestingConfig"
+        ;;
+    prod)
+        export APP_SETTINGS="server.config.ProductionConfig"
+        ;;
+    unconfig)
+        unset APP_SETTINGS
+        ;;
+esac

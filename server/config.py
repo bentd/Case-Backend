@@ -31,6 +31,9 @@ class BaseConfig(object):
     #database
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    #location
+    LOCATION = "http://localhost"
+
 
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
@@ -41,7 +44,7 @@ class DevelopmentConfig(BaseConfig):
     WTF_CSRF_ENABLED = False
 
     # database URI
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(databasedir, 'dev.sqlite')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(databasedir, "dev.sqlite")
 
 
 class TestingConfig(BaseConfig):
@@ -53,7 +56,10 @@ class TestingConfig(BaseConfig):
     WTF_CSRF_ENABLED = False
 
     # database URI
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(databasedir, 'test.sqlite')
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:8?At7NYQeDa7tjU#TD%Uv6r5CTHe5Y-4@35.196.58.16:3306/casedb"
+
+    #location
+    LOCATION = "http://case-app-backend.appspot.com"
 
 
 class ProductionConfig(BaseConfig):
@@ -63,11 +69,12 @@ class ProductionConfig(BaseConfig):
     SECRET_KEY = "SECRET_KEY"
     SECURITY_PASSWORD_SALT = "SECRET_KEY"
 
-    # mail settings
-    MAIL_USE_SSL = False
-
     # database URI
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:8?At7NYQeDa7tjU#TD%Uv6r5CTHe5Y-4@35.196.32.114:3306/casedb"
+
+    SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI", "mysql+pymysql://root:8?At7NYQeDa7tjU#TD%Uv6r5CTHe5Y-4@/casedb?unix_socket=/cloudsql/case-app-backend:us-east1:casedb")
+
+    #location
+    LOCATION = "http://case-app-backend.appspot.com"
 
     # stripe keys
     STRIPE_SECRET_KEY = "STRIPE_SECRET_KEY"

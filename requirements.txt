@@ -1,9 +1,12 @@
 bcrypt
+coverage
 flask
 flask_bcrypt
 flask_cors
 flask_httpauth
 flask_mail
+flask_migrate
+flask_script
 flask_sqlalchemy
 flask_wtf
 gunicorn
