@@ -5,14 +5,17 @@ import os
 from flask import Flask
 from flask import g
 from flask import Response
+from flask import request
 from flask_bcrypt import Bcrypt
+from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth
 from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
-app.config.from_object(os.environ.get("APP_SETTINGS", "server.config.ProductionConfig"))
+app.config.from_object(os.environ.get("APP_SETTINGS"))
+CORS(app)
 
 
 bcrypt = Bcrypt(app)
@@ -20,8 +23,8 @@ db = SQLAlchemy(app)
 mail = Mail(app)
 
 
-# from server.database.posts import Post
-# from server.database.schools import School
+from server.database.posts import Post
+from server.database.schools import School
 from server.database.users import User
 
 
@@ -44,6 +47,13 @@ app.register_blueprint(accounts)
 app.register_blueprint(posts)
 app.register_blueprint(schools)
 app.register_blueprint(tokens)
+
+
+@app.before_request
+def before():
+
+    if "case-app-backend.appspot.com" in request.url:
+        abort(400)
 
 
 @app.errorhandler(403)

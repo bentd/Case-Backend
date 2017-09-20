@@ -1,19 +1,29 @@
 #! ../../env/bin/python
 
 from flask import Blueprint
+from flask import jsonify
 from flask import request
 from flask import Response
 from server import auth
+from server import db
+from server.database.posts import Post
+from server.forms import PostForm
 
 
 posts = Blueprint("posts", __name__)
 
 
-@posts.route("/posts", methods=["POST"])
+@posts.route("/post", methods=["POST"])
 @auth.login_required
 def createPost():
 
-    return Response(str(request.json), status=400)
+    form = PostForm(data=request.json)
+    if form.validate():
+        # add post
+        post = Post.fromForm(form)
+        post.add()
+        return jsonify(post.serialize), 200
+    return jsonify(form.errors), 400
 
 
 @posts.route("/posts/<int:id>", methods=["GET"])
@@ -41,4 +51,8 @@ def deletePost(id):
 @auth.login_required
 def retrievePosts():
 
-    return Response(str(request.json), status=400)
+    school_id = request.args.get("school_id")
+    offset = request.args.get("offset", 0)
+    posts = db.session.query(Post).filter_by(school_id=school_id).limit(10).offset(offset).all()
+    posts = [post.serialize for post in posts]
+    return jsonify(posts), 200

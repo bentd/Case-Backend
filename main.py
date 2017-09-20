@@ -18,6 +18,4 @@ from server import db
 
 if __name__ == "__main__":
 
-    app.config.from_object(os.environ.get("APP_SETTINGS", "server.config.TestingConfig"))
-    db.create_all()
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="0.0.0.0", port=5000)

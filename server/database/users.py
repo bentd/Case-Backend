@@ -16,7 +16,7 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    uid = db.Column(db.Integer, primary_key=True) #autoincrement="auto")
+    id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), unique=True, nullable=False)
     phash = db.Column(db.String(64), nullable=False)
     firstName = db.Column(db.String(64), nullable=False)
@@ -49,6 +49,10 @@ class User(db.Model):
 
         return bcrypt.check_password_hash(self.phash, password)
 
+    def generateToken(self, expiry=None):
+
+        return User.Serializer(expiry).dumps({"email": self.email})
+
     def add(self):
 
         db.session.add(self)
@@ -67,19 +71,6 @@ class User(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def generateToken(self, expiry=None):
-
-        return User.Serializer(expiry).dumps({"email": self.email})
-
-    @classmethod
-    def fromForm(cls, form):
-
-        email = form.email.data
-        password = form.password.data
-        firstName = form.firstName.data
-        lastName = form.lastName.data
-        return User(email=email, password=password, firstName=firstName, lastName=lastName)
-
     @property
     def serialize(self):
 
@@ -87,6 +78,21 @@ class User(db.Model):
                 "firstName": self.firstName,
                 "lastName": self.lastName,
                 "confirmed": self.confirmed}
+
+    @staticmethod
+    def fromForm(form):
+
+        email = form.email.data
+        password = form.password.data
+        firstName = form.firstName.data
+        lastName = form.lastName.data
+        return User(email=email, password=password, firstName=firstName, lastName=lastName)
+
+    @staticmethod
+    def exists(email):
+
+        user = db.session.query(User).filter_by(email=email).first()
+        return True if user else False
 
     @staticmethod
     def Serializer(expiry=None):

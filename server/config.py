@@ -13,8 +13,8 @@ class BaseConfig(object):
     DEBUG = False
     DEBUG_TB_ENABLED = False
     DEBUG_TB_INTERCEPT_REDIRECTS = False
-    SECRET_KEY = "$3CR3+"
-    SECURITY_PASSWORD_SALT = ""
+    SECRET_KEY = "vNChtkUHtXrb7uRcvBfZhvXtcjLmjCfq"
+    SECURITY_PASSWORD_SALT = "kbgmAEVt7n55BLJe"
     WTF_CSRF_ENABLED = True
 
     # mail settings
@@ -30,9 +30,6 @@ class BaseConfig(object):
 
     #database
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-    #location
-    LOCATION = "http://localhost"
 
 
 class DevelopmentConfig(BaseConfig):
@@ -52,29 +49,20 @@ class TestingConfig(BaseConfig):
 
     # main config
     BCRYPT_LOG_ROUNDS = 1
+    DEBUG = True
+    DEBUG_TB_ENABLED = True
     TESTING = True
     WTF_CSRF_ENABLED = False
 
     # database URI
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:8?At7NYQeDa7tjU#TD%Uv6r5CTHe5Y-4@35.196.58.16:3306/casedb"
-
-    #location
-    LOCATION = "http://case-app-backend.appspot.com"
+    SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI", "mysql+pymysql://root:kmug07shTrnQYWNnjUwRMVEwsiQ2vZFD@35.196.58.16/casedb")
 
 
 class ProductionConfig(BaseConfig):
     """Production configuration."""
 
-    # main config
-    SECRET_KEY = "SECRET_KEY"
-    SECURITY_PASSWORD_SALT = "SECRET_KEY"
-
     # database URI
-
-    SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI", "mysql+pymysql://root:8?At7NYQeDa7tjU#TD%Uv6r5CTHe5Y-4@/casedb?unix_socket=/cloudsql/case-app-backend:us-east1:casedb")
-
-    #location
-    LOCATION = "http://case-app-backend.appspot.com"
+    SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
 
     # stripe keys
     STRIPE_SECRET_KEY = "STRIPE_SECRET_KEY"

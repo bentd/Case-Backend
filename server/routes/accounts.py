@@ -29,6 +29,7 @@ def signup():
     # check form for errors
     form = SignupForm(data=request.json)
     if form.validate():
+        # create user from form
         # add user to database
         user = User.fromForm(form)
         user.add()
@@ -82,9 +83,9 @@ def confirmed(token):
 @auth.login_required
 def login():
 
-    json = g.user.serialize
-    json.update({"token": g.user.generateToken()})
-    return jsonify(json)
+    data = g.user.serialize
+    data.update({"token": g.user.generateToken()})
+    return jsonify(data)
 
 
 @accounts.route("/account", methods=["PUT"])
@@ -92,7 +93,7 @@ def login():
 def updateAccount():
 
     form = EditAccountForm(data=request.json)
-    if form.validate:
+    if form.validate():
         g.user.update(form)
         db.session.add(user)
         db.session.commit()

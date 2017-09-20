@@ -3,60 +3,64 @@
 from server import db
 
 from server.database.users import User
+from wtforms import FloatField
 from wtforms import Form
+from wtforms import IntegerField
 from wtforms import PasswordField
 from wtforms import StringField
 from wtforms import TextField
-from wtforms.validators import DataRequired as required
+from wtforms.validators import DataRequired as Required
 from wtforms.validators import Email
 from wtforms.validators import Length
 from wtforms.validators import EqualTo
 
 
+def UniqueEmail(form, email):
+
+    if User.exists(email.data):
+        email.errors.append("Email already exists")
+        return False
+    return True
+
+
+def RegisteredEmail(form, email):
+
+    return User.exists(email.data)
+
+
 class SignupForm(Form):
 
-
-    firstName = StringField("First Name", [required(), Length(max=255)])
-    lastName = StringField("Last Name", [required(), Length(max=255)])
-    email = TextField("Email", [required(), Email(message="Invalid email"), Length(min=6, max=255)])
-    password = PasswordField("Password", [required(), Length(min=6, max=255)])
-    confirm = PasswordField("Repeat Password", [required(), EqualTo("password", message="Passwords must match")])
-
-    def validate(self):
-
-        initialValidation = super(SignupForm, self).validate()
-        if not initialValidation:
-            return False
-        user = db.session.query(User).filter_by(email=self.email.data).first()
-        if user:
-            self.email.errors.append("Email already exists")
-            return False
-        return True
+    firstName = StringField("First Name", [Required(), Length(max=32)])
+    lastName = StringField("Last Name", [Required(), Length(max=32)])
+    email = TextField("Email", [Required(), Email(), Length(min=6, max=64), UniqueEmail])
+    password = PasswordField("Password", [Required(), Length(min=6, max=256)])
+    confirm = PasswordField("Repeat Password", [Required(), Length(min=6, max=256), EqualTo("password", message="Passwords must match")])
 
 
 class LoginForm(Form):
 
-    email = TextField("Email", [required(), Email()])
-    password = PasswordField("Password", [required()])
+    email = TextField("Email", [Required(), Email(), Length(min=6, max=64), RegisteredEmail])
+    password = PasswordField("Password", [Required(), Length(min=6, max=256)])
 
 
 class ForgotPasswordForm(Form):
 
-    email = TextField("Email", [required(), Email(), Length(min=6, max=255)])
-
-    def validate(self):
-
-        initial_validation = super(ForgotPasswordForm, self).validate()
-        if not initial_validation:
-            return False
-        user = db.session.query(User).filter_by(email=self.email.data).first()
-        if not user:
-            self.email.errors.append("This email is not registered")
-            return False
-        return True
+    email = TextField("Email", [Required(), Email(), Length(min=6, max=256), RegisteredEmail])
 
 
 class ChangePasswordForm(Form):
 
-    password = PasswordField("Password", [required(), Length(min=6, max=255)])
-    confirm = PasswordField("Repeat password", [required(), EqualTo("Password", message="Passwords must match")])
+    old = PasswordField("Old Password", [Required(), Length(min=6, max=256)])
+    password = PasswordField("Password", [Required(), Length(min=6, max=256)])
+    confirm = PasswordField("Repeat Password", [Required(), Length(min=6, max=256), EqualTo("Password", message="Passwords must match")])
+
+
+class PostForm(Form):
+
+    title = StringField("Title", [Required(), Length(max=40)])
+    image_url = StringField("Image URL")
+    condition = StringField("Condition", [Required(), Length(max=16)])
+    description = StringField("Description", [Required(), Length(max=140)])
+    price = FloatField("Price", [Required()])
+    user_id = IntegerField("User ID", [Required()])
+    school_id = IntegerField("School ID", [Required()])

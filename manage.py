@@ -9,14 +9,12 @@ import subprocess
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
-"""
-COV = coverage.coverage(
-        branch=True,
-        include='project/*',
-        omit=['*/__init__.py', '*/config/*']
-    )
+
+COV = coverage.coverage(branch=True,
+                        include="project/*",
+                        omit=["*/__init__.py", "*/config/*"])
 COV.start()
-"""
+
 
 from server import app, db
 
@@ -33,6 +31,29 @@ def createdb():
     """Creates the db tables."""
 
     db.create_all()
+
+@manager.command
+def addschools():
+    """Adds schools to database."""
+
+    # adds schools to database
+    with open("/Users/bentd/OneDrive/Business/Startup/Case/Code/Backend/server/database/schools.json", "r") as schools:
+
+        schools = schools.read() # read from json file
+        schools = json.loads(schools) # convert json to python dictionary
+        schools = schools["schools"] # get the dictionary from schools keys
+        abbrs = schools.keys() # get school abbreviations
+        abbrs.sort() # sort school Names
+
+        for abbr in abbrs:
+
+            name = schools[abbr]
+
+            if len(abbr) > 8 or abbr == None:
+                db.session.add(School(name=name))
+            else:
+                db.session.add(School(name=name, abbr=abbr))
+            db.session.commit()
 
 @manager.command
 def dropdb():
@@ -61,16 +82,6 @@ def coverage():
     COV.html_report(directory=covdir)
     print('HTML version: file://%s/index.html' % covdir)
     COV.erase()
-
-@manager.command
-def start(config):
-
-    configs = {"dev": "server.config.DevelopmentConfig",
-               "test": "server.config.TestingConfig",
-               "prod": "server.config.ProductionConfig"}
-    app.config.from_object(configs[config])
-    db.create_all()
-    app.run(host="0.0.0.0", port=80, debug=True)
 
 
 if __name__ == '__main__':
