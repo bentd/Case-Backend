@@ -53,7 +53,7 @@ def sendConfirmation():
     token = g.user.generateToken()
     url = url_for("accounts.confirm", token=token, _external=True)
     template = render_template("confirm/email.html", url=url)
-    sendEmail(g.user.email, "Confirm Case App Account", template)
+    print sendEmail(g.user.email, "Confirm Case App Account", template)
     return "Confirmation sent", 200
 
 

@@ -25,7 +25,7 @@ class BaseConfig(object):
 
     # mail authentication and sender
     MAIL_USERNAME = "code@dylanbent.com"
-    MAIL_PASSWORD = "dcwvbpbayrmcotuy"
+    MAIL_PASSWORD = "gmfkxpyybwtkszab"
     MAIL_DEFAULT_SENDER = "code@dylanbent.com"
 
     #database
@@ -48,7 +48,7 @@ class TestingConfig(BaseConfig):
     """Testing configuration."""
 
     # main config
-    BCRYPT_LOG_ROUNDS = 1
+    BCRYPT_LOG_ROUNDS = 5
     DEBUG = True
     DEBUG_TB_ENABLED = True
     TESTING = True

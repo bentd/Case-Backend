@@ -6,9 +6,10 @@ from server import mail
 
 def sendEmail(to, subject, template):
 
+    msg = Message(subject,
+                  recipients=[to],
+                  html=template,
+                  sender=app.config["MAIL_DEFAULT_SENDER"])
     with mail.connect() as conn:
-        msg = Message(subject,
-                      recipients=[to],
-                      html=template,
-                      sender=app.config["MAIL_DEFAULT_SENDER"])
         conn.send(msg)
+    mail.send(msg)
