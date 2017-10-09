@@ -36,8 +36,8 @@ def signup():
         # send confirmation email
         token = user.generateToken(expiry=172800)
         url = url_for("accounts.confirm", token=token, _external=True)
-        template = render_template("confirm/email.html", url=url)
-        sendEmail(user.email, "Confirm Case App Account", template)
+        template = render_template("confirm/email.html", code=user.vcode)
+        print sendEmail(user.email, "Confirm Case App Account", template)
         # return user information
         json = user.serialize
         json.update({"token": user.generateToken()})
@@ -46,37 +46,10 @@ def signup():
     return jsonify(form.errors), 400
 
 
-@accounts.route("/account/confirmation", methods=["POST"])
-@auth.login_required
-def sendConfirmation():
+@accounts.route("/account/confirm", methods=["POST"])
+def confirm():
 
-    token = g.user.generateToken()
-    url = url_for("accounts.confirm", token=token, _external=True)
-    template = render_template("confirm/email.html", url=url)
-    print sendEmail(g.user.email, "Confirm Case App Account", template)
-    return "Confirmation sent", 200
-
-
-@accounts.route("/account/confirm/<string:token>", methods=["GET"])
-def confirm(token):
-
-    user = User.verifyUser(token)
-    if user:
-        if not user.confirmed:
-            user.confirmed = datetime.datetime.utcnow()
-            db.session.add(user)
-            db.session.commit()
-        return redirect(url_for("accounts.confirmed", token=token))
-    return "User not found", 404
-
-
-@accounts.route("/account/confirmed/<string:token>", methods=["GET"])
-def confirmed(token):
-
-    user = User.verifyUser(token)
-    if user:
-        return render_template("confirm/confirmed.html", user=user)
-    abort(500)
+    return ""
 
 
 @accounts.route("/account", methods=["GET"])

@@ -9,9 +9,10 @@ from flask import request
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from flask_httpauth import HTTPBasicAuth
-from flask_mail import Mail
 from flask_sqlalchemy import SQLAlchemy
 
+
+assert os.environ.get("APP_SETTINGS"), "App Isn't Configured!"
 
 app = Flask(__name__)
 app.config.from_object(os.environ.get("APP_SETTINGS"))
@@ -20,7 +21,6 @@ CORS(app)
 
 bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
-mail = Mail(app)
 
 
 from server.database.posts import Post
@@ -37,6 +37,7 @@ def verify(identifier, password):
         g.user = user
         return True
     return False
+
 
 from server.routes.accounts import accounts
 from server.routes.posts import posts

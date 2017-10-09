@@ -1,7 +1,8 @@
 #! ../../env/bin/python
 
-from server import db
+import re
 
+from server import db
 from server.database.users import User
 from wtforms import FloatField
 from wtforms import Form
@@ -10,10 +11,18 @@ from wtforms import PasswordField
 from wtforms import StringField
 from wtforms import TextField
 from wtforms.validators import DataRequired as Required
-from wtforms.validators import Email
 from wtforms.validators import Length
 from wtforms.validators import EqualTo
 
+
+def ValidEmail(form, email):
+
+    regex = r"(^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
+    print re.match(regex, email.data)
+    if re.match(regex, email.data):
+        return True
+    email.errors.append("Invalid email")
+    return False
 
 def UniqueEmail(form, email):
 
@@ -30,22 +39,22 @@ def RegisteredEmail(form, email):
 
 class SignupForm(Form):
 
-    firstName = StringField("First Name", [Required(), Length(max=32)])
-    lastName = StringField("Last Name", [Required(), Length(max=32)])
-    email = TextField("Email", [Required(), Email(), Length(min=6, max=64), UniqueEmail])
+    fname = StringField("First Name", [Required(), Length(max=32)])
+    lname = StringField("Last Name", [Required(), Length(max=32)])
+    email = TextField("Email", [Required(), ValidEmail, UniqueEmail, Length(min=6, max=64)])
     password = PasswordField("Password", [Required(), Length(min=6, max=256)])
     confirm = PasswordField("Repeat Password", [Required(), Length(min=6, max=256), EqualTo("password", message="Passwords must match")])
 
 
 class LoginForm(Form):
 
-    email = TextField("Email", [Required(), Email(), Length(min=6, max=64), RegisteredEmail])
+    email = TextField("Email", [Required(), ValidEmail, Length(min=6, max=64), RegisteredEmail])
     password = PasswordField("Password", [Required(), Length(min=6, max=256)])
 
 
 class ForgotPasswordForm(Form):
 
-    email = TextField("Email", [Required(), Email(), Length(min=6, max=256), RegisteredEmail])
+    email = TextField("Email", [Required(), ValidEmail, Length(min=6, max=256), RegisteredEmail])
 
 
 class ChangePasswordForm(Form):
@@ -58,9 +67,9 @@ class ChangePasswordForm(Form):
 class PostForm(Form):
 
     title = StringField("Title", [Required(), Length(max=40)])
-    image_url = StringField("Image URL")
+    imageurl = StringField("Image URL")
     condition = StringField("Condition", [Required(), Length(max=16)])
     description = StringField("Description", [Required(), Length(max=140)])
     price = FloatField("Price", [Required()])
-    user_id = IntegerField("User ID", [Required()])
-    school_id = IntegerField("School ID", [Required()])
+    userid = IntegerField("User ID", [Required()])
+    schoolid = IntegerField("School ID", [Required()])

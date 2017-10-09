@@ -16,12 +16,12 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(40), nullable=False)
-    image_url = db.Column(db.String(128))
+    imageurl = db.Column(db.String(128))
     condition = db.Column(db.String(16), nullable=False)
     description = db.Column(db.String(140), nullable=False)
     price = db.Column(db.Float(2), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    school_id = db.Column(db.Integer, db.ForeignKey("schools.id"))
+    userid = db.Column(db.Integer, db.ForeignKey("users.id"))
+    schoolid = db.Column(db.Integer, db.ForeignKey("schools.id"))
 
     user = db.relationship("User")
     school = db.relationship("School")

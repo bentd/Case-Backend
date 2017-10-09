@@ -18,12 +18,16 @@ COV.start()
 
 from server import app, db
 
-
 migrate = Migrate(app, db)
 manager = Manager(app)
 
 # migrations
 manager.add_command('db', MigrateCommand)
+"""
+1) python manage.py db init
+2) python manage.py db migrate
+3) python manage.py db upgrade
+"""
 
 
 @manager.command
@@ -37,6 +41,7 @@ def addschools():
     """Adds schools to database."""
 
     # adds schools to database
+    wdir = os.getcwd()
     with open("/Users/bentd/OneDrive/Business/Startup/Case/Code/Backend/server/database/schools.json", "r") as schools:
 
         schools = schools.read() # read from json file

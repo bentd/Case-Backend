@@ -17,17 +17,6 @@ class BaseConfig(object):
     SECURITY_PASSWORD_SALT = "kbgmAEVt7n55BLJe"
     WTF_CSRF_ENABLED = True
 
-    # mail settings
-    MAIL_PORT = 587
-    MAIL_SERVER = "smtp.gmail.com"
-    MAIL_USE_TLS = True
-    MAIL_USE_SSL = False
-
-    # mail authentication and sender
-    MAIL_USERNAME = "code@dylanbent.com"
-    MAIL_PASSWORD = "gmfkxpyybwtkszab"
-    MAIL_DEFAULT_SENDER = "code@dylanbent.com"
-
     #database
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
@@ -57,6 +46,14 @@ class TestingConfig(BaseConfig):
     # database URI
     SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI", "mysql+pymysql://root:kmug07shTrnQYWNnjUwRMVEwsiQ2vZFD@35.196.58.16/casedb")
 
+    # mailgun config
+    # MAILGUN_DOMAIN = "sandbox6868f737eeb34d2eb7efa45ab1ad7ed4.mailgun.org"
+    # MAILGUN_DEFAULT_SENDER = "Case Team <mailgun@sandbox6868f737eeb34d2eb7efa45ab1ad7ed4.mailgun.org>"
+    # MAILGUN_API_KEY = "key-e24110eb9c03ec59ff02fd222893ee3b"
+
+    MAILGUN_DOMAIN = "mg.caseapp.co"
+    MAILGUN_DEFAULT_SENDER = "Case Team <support@caseapp.co>"
+    MAILGUN_API_KEY = "key-e24110eb9c03ec59ff02fd222893ee3b"
 
 class ProductionConfig(BaseConfig):
     """Production configuration."""

@@ -4,7 +4,6 @@ flask
 flask_bcrypt
 flask_cors
 flask_httpauth
-flask_mail
 flask_migrate
 flask_script
 flask_sqlalchemy
@@ -12,12 +11,13 @@ flask_wtf
 gunicorn
 itsdangerous
 pymysql
+requests
 sqlalchemy
 wtforms
 
+#flaskmail
 #passlib
 #flask_wtf
-
 #Flask==0.10.1
 #Flask-Bcrypt==0.6.0
 #Flask-DebugToolbar==0.9.0
