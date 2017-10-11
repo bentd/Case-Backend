@@ -31,17 +31,17 @@ class Post(db.Model):
                   condition,
                   description,
                   price,
-                  user_id,
-                  school_id,
-                  image_url=None):
+                  userid,
+                  schoolid,
+                  imageurl=None):
 
         self.title = title
-        self.image_url = image_url
+        self.imageurl = imageurl
         self.condition = condition
         self.description = description
         self.price = price
-        self.user_id = user_id
-        self.school_id = school_id
+        self.userid = userid
+        self.schoolid = schoolid
 
     def add(self):
 
@@ -63,10 +63,10 @@ class Post(db.Model):
     def fromForm(form):
 
         title = form.title.data
-        image_url = form.image_url.data
+        imageurl = form.imageurl.data
         condition = form.condition.data
         description = form.description.data
         price = form.price.data
-        user_id = form.user_id.data
-        school_id = form.school_id.data
-        return Post(title, condition, description, price, user_id, school_id, image_url=image_url)
+        userid = form.userid.data
+        schoolid = form.schoolid.data
+        return Post(title, condition, description, price, userid, schoolid, imageurl=imageurl)
