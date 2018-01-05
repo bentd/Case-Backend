@@ -1,0 +1,15 @@
+*.pyc
+env
+migrations
+
+
+# OTHER
+*~
+*.log
+*.tmp
+*.tmp.*
+.tmp/
+.versions/
+$RECYCLE.BIN/
+.DS_Store
+Thumbs.db

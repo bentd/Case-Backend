@@ -2,15 +2,17 @@
 
 config="$1"
 
+export DATABASE_URL=$(heroku config:get DATABASE_URL);
+
 case $config in
     dev)
-        export APP_SETTINGS=server.config.DevelopmentConfig
+        export APP_SETTINGS=backend.config.DevelopmentConfig
         ;;
     test)
-        export APP_SETTINGS=server.config.TestingConfig
+        export APP_SETTINGS=backend.config.TestingConfig
         ;;
     prod)
-        export APP_SETTINGS=server.config.ProductionConfig
+        export APP_SETTINGS=backend.config.ProductionConfig
         ;;
     unconfig)
         unset APP_SETTINGS
